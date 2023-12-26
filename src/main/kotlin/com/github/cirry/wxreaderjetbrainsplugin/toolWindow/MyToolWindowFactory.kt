@@ -1,45 +1,42 @@
 package com.github.cirry.wxreaderjetbrainsplugin.toolWindow
 
-import com.intellij.openapi.components.service
-import com.intellij.openapi.diagnostic.thisLogger
+import com.github.cirry.wxreaderjetbrainsplugin.MyBundle
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
-import com.github.cirry.wxreaderjetbrainsplugin.MyBundle
-import com.github.cirry.wxreaderjetbrainsplugin.services.MyProjectService
-import javax.swing.JButton
+import com.intellij.ui.jcef.JBCefApp
+import com.intellij.ui.jcef.JBCefBrowser
+import java.awt.*
+import javax.swing.*
 
 
 class MyToolWindowFactory : ToolWindowFactory {
 
     init {
-        thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val myToolWindow = MyToolWindow(toolWindow)
-        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
+        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), "微信阅读", false)
         toolWindow.contentManager.addContent(content)
     }
 
     override fun shouldBeAvailable(project: Project) = true
 
     class MyToolWindow(toolWindow: ToolWindow) {
-
-        private val service = toolWindow.project.service<MyProjectService>()
-
         fun getContent() = JBPanel<JBPanel<*>>().apply {
-            val label = JBLabel(MyBundle.message("randomLabel", "?"))
-
-            add(label)
-            add(JButton(MyBundle.message("shuffle")).apply {
-                addActionListener {
-                    label.text = MyBundle.message("randomLabel", service.getRandomNumber())
-                }
-            })
+            val noSupportLabel = JBLabel(MyBundle.message("noSupport"))
+            if (JBCefApp.isSupported()) {
+                val jbcef = JBCefBrowser()
+                add(jbcef.component)
+                this.setSize(720, 1024)
+                jbcef.loadURL("https://cirry.cn")
+            } else {
+                add(noSupportLabel)
+            }
         }
     }
 }
