@@ -9,6 +9,7 @@ import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.ui.jcef.JBCefBrowser
+import com.intellij.ui.jcef.executeJavaScriptAsync
 import java.awt.*
 import javax.swing.*
 
@@ -16,11 +17,12 @@ import javax.swing.*
 class MyToolWindowFactory : ToolWindowFactory {
 
     init {
+
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val myToolWindow = MyToolWindow(toolWindow)
-        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), "微信阅读", false)
+        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
         toolWindow.contentManager.addContent(content)
     }
 
@@ -31,9 +33,8 @@ class MyToolWindowFactory : ToolWindowFactory {
             val noSupportLabel = JBLabel(MyBundle.message("noSupport"))
             if (JBCefApp.isSupported()) {
                 val jbcef = JBCefBrowser()
-                add(jbcef.component)
-                this.setSize(720, 1024)
-                jbcef.loadURL("https://cirry.cn")
+                add(jbcef.component, BorderLayout.CENTER)
+                jbcef.loadURL("https://weread.qq.com/")
             } else {
                 add(noSupportLabel)
             }
