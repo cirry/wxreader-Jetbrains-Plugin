@@ -9,9 +9,8 @@ import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.ui.jcef.JBCefBrowser
-import com.intellij.ui.jcef.executeJavaScriptAsync
-import java.awt.*
-import javax.swing.*
+import java.awt.BorderLayout
+import java.awt.Dimension
 
 
 class MyToolWindowFactory : ToolWindowFactory {
@@ -22,7 +21,7 @@ class MyToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val myToolWindow = MyToolWindow(toolWindow)
-        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
+        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), "", false)
         toolWindow.contentManager.addContent(content)
     }
 
@@ -33,6 +32,7 @@ class MyToolWindowFactory : ToolWindowFactory {
             val noSupportLabel = JBLabel(MyBundle.message("noSupport"))
             if (JBCefApp.isSupported()) {
                 val jbcef = JBCefBrowser()
+                jbcef.component.preferredSize = Dimension(750, 1000)
                 add(jbcef.component, BorderLayout.CENTER)
                 jbcef.loadURL("https://weread.qq.com/")
             } else {
