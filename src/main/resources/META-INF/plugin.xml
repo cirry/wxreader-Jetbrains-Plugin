@@ -7,12 +7,14 @@
     <depends>com.intellij.modules.platform</depends>
 
     <description><![CDATA[
-    微信阅读的IDEA插件
-    插件的使用方法：
-    <ul>
-    <li>使用上下按键进行文章浏览，使用左右按键进行上一篇下一篇文章切换</li>
-    <li><a href="https://cirry.cn">更多信息获取</a></li></li>
-    </ul>
+Provides support for My Framework.
+The support includes:
+<ul>
+  <li>code completion</li>
+  <li>references</li>
+</ul>
+For more information visit the
+<a href="https://example.com">project site</a>.
 ]]></description>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
